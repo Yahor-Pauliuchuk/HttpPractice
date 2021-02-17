@@ -41,5 +41,38 @@ namespace LessonOne.Controllers
 
             return Created(string.Empty, newForecast);
         }
+
+        [HttpPut("{city}")]
+        public IActionResult Put(string city, [FromBody] WeatherForecast request)
+        {
+            var forecast = weatherForecasts.SingleOrDefault(f => f.City.Equals(city));
+
+            if (forecast == null)
+            {
+                return NotFound();
+            }
+
+            forecast.Date = request.Date;
+            forecast.TemperatureC = request.TemperatureC;
+            forecast.Summary = request.Summary;
+            forecast.City = request.City;
+
+            return Ok();
+        }
+
+        [HttpDelete("{city}")]
+        public IActionResult Delete(string city)
+        {
+            var forecast = weatherForecasts.SingleOrDefault(f => f.City.Equals(city));
+
+            if (forecast == null)
+            {
+                return NotFound();
+            }
+
+            weatherForecasts.Remove(forecast);
+
+            return Ok();
+        }
     }
 }
